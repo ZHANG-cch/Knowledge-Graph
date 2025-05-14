@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-translate-key="pageTitle">AI图谱 - 知识图谱展示</title>
+  <link rel="stylesheet" href="user.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- 左侧导航栏 -->
+    <div class="sidebar">
+      <div class="logo">
+        <img src="tubiao.jpg" alt="AI图谱图标" width="64" height="64">
+        <h2 data-translate-key="appName">AI图谱</h2>
+      </div>
+      <nav class="menu">
+        <ul>
+          <li data-section="graph-section"><i class="fas fa-project-diagram"></i> <span data-translate-key="menuGraph">知识图谱</span></li>
+          <li data-section="course-recommendation-section"><i class="fas fa-graduation-cap"></i> <span data-translate-key="menuCourses">课程推荐</span></li>
+          <li data-section="settings-section"><i class="fas fa-cog"></i> <span data-translate-key="menuSettings">设置</span></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- 主内容区域 -->
+    <div class="main-content">
+      <!-- 顶部搜索栏 -->
+      <header class="header">
+        <div class="search-bar">
+          <input type="text" placeholder="搜索节点或关系" data-translate-key="searchPlaceholder">
+          <button><i class="fas fa-search"></i></button>
+        </div>
+        <div class="user-actions">
+          <a href="login.html" id="login-logout-link">
+            <button class="login-btn" id="login-logout-btn">登录</button>
+          </a>
+        </div>
+      </header>
+
+      <!-- 内容区域 -->
+      <div class="content">
+        <!-- 知识图谱和聊天组合区域 (默认显示) -->
+        <div id="graph-section" class="content-section active">
+          <!-- Neo4j展示区域 -->
+          <div class="graph-container">
+            <div class="graph-display">
+              <div id="neo4j-graph" style="width: 100%; height: 100%; background-color: #f9f9f9; display: flex; justify-content: center; align-items: center;">
+                <div class="graph-placeholder">
+                  <i class="fas fa-project-diagram" style="font-size: 48px; color: #1890ff;"></i>
+                  <p data-translate-key="graphPlaceholderText">Neo4j知识图谱展示区域</p>
+                  <button class="load-graph-btn" data-translate-key="loadGraphButton">加载AI知识图谱</button>
+                </div>
+              </div>
+            </div>
+            <div class="graph-controls">
+              <button class="control-btn"><i class="fas fa-expand"></i> <span data-translate-key="zoomInButton">放大</span></button>
+              <button class="control-btn"><i class="fas fa-compress"></i> <span data-translate-key="zoomOutButton">缩小</span></button>
+              <button class="control-btn"><i class="fas fa-sync-alt"></i> <span data-translate-key="resetButton">重置</span></button>
+            </div>
+          </div>
+
+          <!-- 聊天区域 -->
+          <div class="chat-container">
+            <h3 data-translate-key="chatTitle">图谱助手</h3>
+            <div class="chat-messages">
+              <div class="message ai">
+                <div class="message-content" data-translate-key="chatWelcome1">
+                  您好！我是您的知识图谱助手，可以帮您查询和分析图谱数据。
+                </div>
+              </div>
+              <div class="message ai">
+                <div class="message-content" data-translate-key="chatWelcome2">
+                  您可以尝试问我："什么是深度学习？" 或 "机器学习和神经网络有什么关系？"
+                </div>
+              </div>
+              <div class="message ai">
+                <div class="message-content" data-translate-key="chatCommands">
+                  常用命令：<br>
+                  /load - 加载完整图谱<br>
+                  /search 关键词 - 搜索节点<br>
+                  /help - 显示帮助信息
+                </div>
+              </div>
+            </div>
+            <div class="chat-input">
+              <input type="text" placeholder="输入您关于图谱的查询..." data-translate-key="chatInputPlaceholder">
+              <button><i class="fas fa-paper-plane"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 课程推荐区域 (初始隐藏) -->
+        <div id="course-recommendation-section" class="content-section" style="display: none;">
+          <h2 class="section-title" data-translate-key="courseTitle">课程推荐</h2>
+          <p class="section-description" data-translate-key="courseDescription">根据您的学习兴趣和知识图谱探索，为您推荐以下课程：</p>
+          <div class="course-grid">
+            <div class="course-card">
+              <img src="Python.png" alt="Python 课程封面">
+              <div class="course-info">
+                <h3 data-translate-key="course1Title">Python数据分析入门</h3>
+                <p data-translate-key="course1Desc">学习使用Python进行数据处理、分析和可视化的基础知识。</p>
+                <span class="course-tag">数据科学</span>
+                <span class="course-tag">Python</span>
+                <button class="course-btn" data-translate-key="viewDetailsButton">查看详情</button>
+              </div>
+            </div>
+            <div class="course-card">
+              <img src="web.png" alt="Web 开发课程封面">
+              <div class="course-info">
+                <h3 data-translate-key="course2Title">Web开发全栈工程师</h3>
+                <p data-translate-key="course2Desc">掌握前端和后端技术，构建现代化的Web应用程序。</p>
+                <span class="course-tag">Web开发</span>
+                <span class="course-tag">全栈</span>
+                <button class="course-btn" data-translate-key="viewDetailsButton">查看详情</button>
+              </div>
+            </div>
+            <div class="course-card">
+              <img src="d4d0eebe38175d850e2f20f6c8cc310f.png" alt="机器学习课程封面">
+              <div class="course-info">
+                <h3 data-translate-key="course3Title">机器学习实战</h3>
+                <p data-translate-key="course3Desc">深入了解常用机器学习算法及其在实际项目中的应用。</p>
+                <span class="course-tag">人工智能</span>
+                <span class="course-tag">机器学习</span>
+                <button class="course-btn" data-translate-key="viewDetailsButton">查看详情</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 设置区域 (初始隐藏) -->
+        <div id="settings-section" class="content-section" style="display: none;">
+          <h2 class="section-title" data-translate-key="settingsTitle">系统设置</h2>
+          <div class="settings-list">
+            <div class="setting-item">
+              <label for="theme-select" data-translate-key="themeLabel">界面主题:</label>
+              <select id="theme-select" name="theme">
+                <option value="light" data-translate-key="themeLight">浅色模式</option>
+                <option value="dark" data-translate-key="themeDark">深色模式</option>
+              </select>
+            </div>
+            <div class="setting-item">
+              <label for="language-select" data-translate-key="languageLabel">显示语言:</label>
+              <select id="language-select" name="language">
+                <option value="zh-CN">简体中文</option>
+                <option value="en-US">English</option>
+              </select>
+            </div>
+            <div class="setting-item">
+                <button class="save-settings-btn" data-translate-key="saveButton">保存设置</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="user.js"></script>
+</body>
+</html>

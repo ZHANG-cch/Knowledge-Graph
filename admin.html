@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI图谱 - 管理页面</title>
+  <link rel="stylesheet" href="admin-styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- 左侧导航栏 -->
+    <div class="sidebar">
+      <div class="logo">
+        <img src="tubiao.jpg" alt="AI图谱图标" width="64" height="64">
+        <h2>AI图谱</h2>
+      </div>
+      <nav class="menu">
+        <ul>
+          <li class="active" data-target="user-management">
+            <i class="fas fa-users"></i> 
+            <span data-translate-key="userManagement">用户管理</span>
+          </li>
+          <li data-target="data-entry">
+            <i class="fas fa-database"></i> 
+            <span data-translate-key="dataEntry">数据录入</span>
+          </li>
+          <li data-target="video-management">
+            <i class="fas fa-video"></i> 
+            <span data-translate-key="videoManagement">视频管理</span>
+          </li>
+          <li data-target="system-settings">
+            <i class="fas fa-cog"></i> 
+            <span data-translate-key="systemSettings">系统设置</span>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- 主内容区域 -->
+    <div class="main-content">
+      <!-- 顶部搜索栏 -->
+      <header class="header">
+        <h1>用户管理</h1>
+        <div class="user-actions">
+          <button id="add-user-btn" class="primary-btn">
+            <i class="fas fa-plus-circle"></i>
+            <span>添加用户</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- 内容区域 -->
+      <div class="content">
+        <!-- 用户管理内容 -->
+        <div id="user-management" class="content-section active">
+          <div class="user-list">
+            <table>
+              <thead>
+                <tr>
+                  <th>用户名</th>
+                  <th>邮箱</th>
+                  <th>角色</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- 用户数据将在这里动态加载 -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 录入数据内容 -->
+        <div id="data-entry" class="content-section">
+          <div class="card">
+            <h2>数据录入</h2>
+            <div class="data-import-container">
+              <div class="import-tabs">
+                <button class="tab-btn active" data-target="one-step-import">一键导入</button>
+                <button class="tab-btn" data-target="step-by-step-import">分步导入</button>
+              </div>
+              
+              <!-- 一键导入面板 -->
+              <div id="one-step-import" class="import-panel active">
+                <div class="upload-area" id="drop-area">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                  <p>拖放CSV文件到此处或点击"选择CSV文件"按钮</p>
+                  <p class="upload-hint">请同时选择两个文件：节点文件和关系文件</p>
+                  <!-- 文件上传按钮和信息将由JavaScript动态生成 -->
+                </div>
+              </div>
+              
+              <!-- 分步导入面板 -->
+              <div id="step-by-step-import" class="import-panel">
+                <div class="step-container">
+                  <!-- 第一步：导入节点 -->
+                  <div class="import-step">
+                    <h3>第一步：导入节点</h3>
+                    <div class="step-upload-area" id="node-drop-area">
+                      <i class="fas fa-file-csv"></i>
+                      <p>选择节点CSV文件</p>
+                      <div class="file-buttons">
+                        <button type="button" class="upload-btn" id="select-node-file-btn">选择节点文件</button>
+                        <div class="selected-files">
+                          <div class="file-item" id="step-node-file-info">未选择文件</div>
+                        </div>
+                      </div>
+                    </div>
+                    <button type="button" class="action-btn" id="import-nodes-btn">导入节点</button>
+                    <div class="step-status" id="node-import-status"></div>
+                  </div>
+                  
+                  <!-- 第二步：导入关系 -->
+                  <div class="import-step">
+                    <h3>第二步：导入关系</h3>
+                    <div class="step-upload-area" id="relation-drop-area">
+                      <i class="fas fa-project-diagram"></i>
+                      <p>选择关系CSV文件</p>
+                      <div class="file-buttons">
+                        <button type="button" class="upload-btn" id="select-relation-file-btn">选择关系文件</button>
+                        <div class="selected-files">
+                          <div class="file-item" id="step-relation-file-info">未选择文件</div>
+                        </div>
+                      </div>
+                    </div>
+                    <button type="button" class="action-btn" id="import-relations-btn">导入关系</button>
+                    <div class="step-status" id="relation-import-status"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="import-progress">
+                <div class="progress-bar" id="progress-bar"></div>
+                <div class="progress-text" id="progress-text">0%</div>
+              </div>
+              <div class="import-log" id="import-log"></div>
+            </div>
+            
+            <!-- 数据统计面板 -->
+            <div class="data-stats-panel">
+              <h3>数据统计</h3>
+              <button type="button" class="refresh-btn" id="refresh-stats-btn">
+                <i class="fas fa-sync-alt"></i> 刷新统计
+              </button>
+              <div class="stats-container" id="data-stats-container">
+                <p>点击刷新按钮获取最新数据统计</p>
+              </div>
+            </div>
+            
+            <div class="csv-format-info">
+              <h3>CSV文件格式要求：</h3>
+              <div class="format-details">
+                <div class="format-section">
+                  <h4>节点文件格式：</h4>
+                  <p>1. 必须包含字段：id, name</p>
+                  <p>2. 可选字段：type, description</p>
+                  <p>3. 文件编码：UTF-8</p>
+                </div>
+                <div class="format-section">
+                  <h4>关系文件格式：</h4>
+                  <p>1. 必须包含字段：sourceId/sourceName, targetId/targetName, type</p>
+                  <p>2. 可选字段：weight, description</p>
+                  <p>3. 文件编码：UTF-8</p>
+                  <p>4. 支持多种来源/目标字段名：source, source_id, from, target, target_id, to等</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 视频管理内容 -->
+        <div id="video-management" class="content-section">
+          <div class="card">
+            <h2>视频管理</h2>
+            <div class="video-actions">
+              <button id="add-video-btn" class="primary-btn">
+                <i class="fas fa-plus-circle"></i>
+                <span>添加视频</span>
+              </button>
+            </div>
+            <div class="video-grid">
+              <!-- 视频列表将在这里动态加载 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 添加视频模态框 -->
+        <div id="add-video-modal" class="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>添加视频</h2>
+            <form id="add-video-form">
+              <div class="form-group">
+                <label for="video-name">视频名称</label>
+                <input type="text" id="video-name" required>
+              </div>
+              <div class="form-group">
+                <label for="video-file">选择视频文件</label>
+                <input type="file" id="video-file" accept="video/*" required>
+              </div>
+              <button type="submit" class="submit-btn">上传视频</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- 系统设置内容 -->
+        <div id="system-settings" class="content-section">
+          <div class="card">
+            <h2 data-translate-key="systemSettings">系统设置</h2>
+            <form class="settings-form">
+              <div class="form-group">
+                <label data-translate-key="themeLabel">系统主题</label>
+                <select name="theme">
+                  <option value="light" data-translate-key="themeLight">浅色</option>
+                  <option value="dark" data-translate-key="themeDark">深色</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label data-translate-key="languageLabel">语言设置</label>
+                <select name="language">
+                  <option value="zh-CN">简体中文</option>
+                  <option value="en-US">English</option>
+                </select>
+              </div>
+              <button type="submit" class="submit-btn" data-translate-key="saveSettings">保存设置</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- 添加用户模态框 -->
+      <div id="add-user-modal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>添加用户</h2>
+          <form id="add-user-form">
+            <div class="form-group">
+              <label for="username">用户名</label>
+              <input type="text" id="username" required>
+            </div>
+            <div class="form-group">
+              <label for="email">邮箱</label>
+              <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+              <label for="password">密码</label>
+              <input type="password" id="password" required>
+            </div>
+            <div class="form-group">
+              <label for="userType">用户角色</label>
+              <select id="userType" required>
+                <option value="user">普通用户</option>
+                <option value="admin">管理员</option>
+              </select>
+            </div>
+            <button type="submit" class="submit-btn">提交</button>
+          </form>
+        </div>
+      </div>
+      
+      <!-- 编辑用户模态框 -->
+      <div id="edit-user-modal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>编辑用户</h2>
+          <form id="edit-user-form">
+            <input type="hidden" id="edit-user-id">
+            <div class="form-group">
+              <label for="edit-username">用户名</label>
+              <input type="text" id="edit-username" required>
+            </div>
+            <div class="form-group">
+              <label for="edit-email">邮箱</label>
+              <input type="email" id="edit-email" required>
+            </div>
+            <div class="form-group">
+              <label for="edit-userType">用户角色</label>
+              <select id="edit-userType" required>
+                <option value="user">普通用户</option>
+                <option value="admin">管理员</option>
+              </select>
+            </div>
+            <button type="submit" class="submit-btn">保存修改</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="admin-script.js"></script>
+  
+</body>
+</html>

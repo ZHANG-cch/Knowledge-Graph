@@ -1,0 +1,28 @@
+# 知识图谱系统依赖要求
+
+# 环境要求
+node>=12.0.0
+
+# 必需依赖包
+express
+neo4j-driver
+cors
+body-parser
+
+# 标准版启动脚本依赖（可选）
+open
+
+# 处理CSV文件依赖
+fs
+path
+
+# 用于进程管理和命令行操作
+child_process
+http
+
+# 用于处理文件上传
+multer
+
+# 推荐进程管理工具（可选，用于生产环境）
+# pm2
+# forever 

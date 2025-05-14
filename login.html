@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录页面</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="login-styles.css">
+</head>
+
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <img src="tubiao.jpg" alt="AI图谱图标" width="80" height="80">
+        <h2 class="text-2xl font-bold text-center mb-6">登录</h2>
+        <form id="loginForm">
+            <div class="mb-4">
+                <label for="loginIdentity" class="block text-gray-700 text-sm font-bold mb-2">选择身份</label>
+                <select id="loginIdentity" class="form-select" required>
+                    <option value="" disabled selected>请选择身份</option>
+                    <option value="user">用户</option>
+                    <option value="admin">管理员</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="loginUsername" class="block text-gray-700 text-sm font-bold mb-2">用户名</label>
+                <input type="text" id="loginUsername" class="form-input" placeholder="请输入用户名">
+            </div>
+            <div class="mb-6">
+                <label for="loginPassword" class="block text-gray-700 text-sm font-bold mb-2">密码</label>
+                <input type="password" id="loginPassword" class="form-input" placeholder="请输入密码">
+            </div>
+            <div class="flex items-center justify-between">
+                <button type="submit" class="login-button">
+                    登录
+                </button>
+                <a href="#" class="forgot-password">
+                    忘记密码?
+                </a>
+            </div>
+        </form>
+        <div class="mt-4 text-center">
+            <p class="text-gray-600">还没有账号? <a href="register.html" class="text-blue-500 hover:text-blue-700">立即注册</a></p>
+        </div>
+    </div>
+    <script src="login-script.js"></script>
+</body>
+
+</html>

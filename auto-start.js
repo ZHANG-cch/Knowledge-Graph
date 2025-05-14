@@ -1,0 +1,1 @@
+fetch('http://localhost:3001/local/users').then(r => r.json()).then(console.log) 
